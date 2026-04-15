@@ -1,0 +1,19 @@
+[
+  {
+    "title": "The Pragmatic Reader",
+    "author": "A. Writer",
+    "description": "A practical journey about mastering software craftsmanship and thoughtful engineering.",
+    "rating": 4.5,
+    "reviews_count": 120,
+    "book_url": "https://example.com/books/pragmatic-reader"
+  },
+  {
+    "title": "Orbit of Ideas",
+    "author": "N. Galaxy",
+    "description": "A science fiction exploration of ethics, AI, and life on distant stations.",
+    "rating": 4.2,
+    "reviews_count": 95,
+    "book_url": "https://example.com/books/orbit-of-ideas"
+  }
+]
+
