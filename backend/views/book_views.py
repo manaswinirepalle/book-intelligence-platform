@@ -15,10 +15,6 @@ from serializers.book_serializer import (
 )
 from scraper.books_scraper import scrape_books
 from rag.ai_features import classify_genre, generate_summary, sentiment_analysis
-from rag.chunker import chunk_text
-from rag.embeddings import embed_texts
-from rag.llm_client import ask_lm_studio, build_fallback_answer
-from rag.vector_store import query_chunks, upsert_chunks
 
 
 @api_view(["GET"])
@@ -58,6 +54,10 @@ def upload_books(request):
     serializer = UploadRequestSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     pages = serializer.validated_data["pages"]
+
+    from rag.chunker import chunk_text
+    from rag.embeddings import embed_texts
+    from rag.vector_store import upsert_chunks
 
     scraped = scrape_books(settings.SCRAPER_BASE_URL, pages=pages)
     documents, embeddings, metadatas, ids = [], [], [], []
@@ -101,6 +101,10 @@ def upload_books(request):
 
 @api_view(["POST"])
 def ask_question(request):
+    from rag.embeddings import embed_texts
+    from rag.llm_client import ask_lm_studio, build_fallback_answer
+    from rag.vector_store import query_chunks
+
     serializer = AskRequestSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     question = serializer.validated_data["question"]
