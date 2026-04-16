@@ -1,7 +1,23 @@
 import axios from "axios";
 
+const resolveApiBaseUrl = () => {
+  const fromEnv = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/+$/, "");
+
+  const hostname = window.location.hostname;
+  const isLocal =
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "0.0.0.0";
+
+  if (isLocal) return "http://localhost:8000/api";
+
+  // In production, default to Vercel rewrite route (/api -> Render backend).
+  return "/api";
+};
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api",
+  baseURL: resolveApiBaseUrl(),
   timeout: 60000,
 });
 

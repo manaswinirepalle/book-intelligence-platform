@@ -6,6 +6,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-secret-key-change-me')
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
+
+def _csv_env(name, default=''):
+    raw = os.getenv(name, default)
+    return [item.strip() for item in raw.split(',') if item.strip()]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,7 +63,9 @@ USE_I18N=True
 USE_TZ=True
 STATIC_URL='static/'
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'True').lower() == 'true'
+CORS_ALLOWED_ORIGINS = _csv_env('CORS_ALLOWED_ORIGINS')
+CSRF_TRUSTED_ORIGINS = _csv_env('CSRF_TRUSTED_ORIGINS')
 CACHE_TTL_SECONDS=int(os.getenv('CACHE_TTL_SECONDS','600'))
 CHROMA_PERSIST_DIR=os.getenv('CHROMA_PERSIST_DIR', str(BASE_DIR / 'chroma_store'))
 EMBEDDING_MODEL_NAME=os.getenv('EMBEDDING_MODEL_NAME','sentence-transformers/all-MiniLM-L6-v2')
